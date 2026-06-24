@@ -1,9 +1,9 @@
-package EXP14;
+package EXP15;
 
 import java.io.*;
 import java.net.*;
 
-public class Client {
+public class RPCServer {
 
     public static void main(String[] args) {
 
@@ -17,14 +17,25 @@ public class Client {
         );
 
         try {
-            Socket socket = new Socket("localhost", 5000);
+            ServerSocket server = new ServerSocket(5000);
+            System.out.println("RPC Server Started...");
 
+            Socket socket = server.accept();
+
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
-            dos.writeUTF("Hello Server!");
+            int a = dis.readInt();
+            int b = dis.readInt();
 
+            int sum = a + b;
+
+            dos.writeInt(sum);
+
+            dis.close();
             dos.close();
             socket.close();
+            server.close();
 
         } catch (Exception e) {
             System.out.println(e);

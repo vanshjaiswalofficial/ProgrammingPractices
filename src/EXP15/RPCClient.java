@@ -1,9 +1,9 @@
-package EXP14;
+package EXP15;
 
 import java.io.*;
 import java.net.*;
 
-public class Client {
+public class RPCClient {
 
     public static void main(String[] args) {
 
@@ -19,10 +19,20 @@ public class Client {
         try {
             Socket socket = new Socket("localhost", 5000);
 
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
-            dos.writeUTF("Hello Server!");
+            int num1 = 10;
+            int num2 = 20;
 
+            dos.writeInt(num1);
+            dos.writeInt(num2);
+
+            int result = dis.readInt();
+
+            System.out.println("Addition = " + result);
+
+            dis.close();
             dos.close();
             socket.close();
 
